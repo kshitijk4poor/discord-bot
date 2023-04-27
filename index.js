@@ -27,10 +27,11 @@ async function runFunction() {
       const lastMessage = member.lastMessage;
       return lastMessage && !member.user.bot && lastMessage.channel.id === channelID;
     });
-    
+    console.log(`Found members: ${members.map(member => member.displayName).join(", ")}`);
+
   if (members.size > 0) {
-    const memberArray = Array.from(members.values());
-    const randomMember = memberArray[Math.floor(Math.random() * memberArray.length)];
+    const randomIndex = Math.floor(Math.random() * members.length);
+const randomMember = members[randomIndex];
     const targetChannel = await client.channels.fetch(targetChannelID);
     await channel.send('This is a test message!');
     await targetChannel.send(`Congratulations to <@${randomMember.id}> for being selected randomly!`);
@@ -38,4 +39,5 @@ async function runFunction() {
 }
 
 client.login(process.env.BOT_TOKEN);
+
 console.log('bot is online');
