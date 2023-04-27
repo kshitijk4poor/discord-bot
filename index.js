@@ -12,8 +12,8 @@ const client = new Client({
   ]
 });
 
-const channelID = '1100170161694183427';
-const targetChannelID = '1101092357635579944';
+const channelID = '1100170161694183427'; //general
+const targetChannelID = '1101092357635579944'; //test
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
@@ -26,12 +26,13 @@ async function runFunction() {
   const members = channel.members.filter(
     member => !member.user.bot && member.lastMessage.channel.id === channelID
   );
-
   if (members.size > 0) {
-    const randomMember = members.random();
+    const memberArray = Array.from(members.values());
+    const randomMember = memberArray[Math.floor(Math.random() * memberArray.length)];
     const targetChannel = await client.channels.fetch(targetChannelID);
     await targetChannel.send(`Congratulations to <@${randomMember.id}> for being selected randomly!`);
   }
 }
+
 client.login(process.env.BOT_TOKEN);
 console.log('bot is online');
