@@ -22,14 +22,17 @@ client.on('ready', () => {
 
 async function runFunction() {
   const channel = await client.channels.fetch(channelID);
-
   const members = channel.members.filter(
-    member => !member.user.bot && member.lastMessage.channel.id === channelID
-  );
+    member => {
+      const lastMessage = member.lastMessage;
+      return lastMessage && !member.user.bot && lastMessage.channel.id === channelID;
+    });
+    
   if (members.size > 0) {
     const memberArray = Array.from(members.values());
     const randomMember = memberArray[Math.floor(Math.random() * memberArray.length)];
     const targetChannel = await client.channels.fetch(targetChannelID);
+    await channel.send('This is a test message!');
     await targetChannel.send(`Congratulations to <@${randomMember.id}> for being selected randomly!`);
   }
 }
